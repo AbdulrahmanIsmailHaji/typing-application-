@@ -4,11 +4,13 @@ import NextAuth from "next-auth/next";
 import GoogleProvider from "next-auth/providers/google";
 
 const authOptions = {
-  secret: process.env.NEXTAUTH_SECERET,
+  secret: process.env.NEXTAUTH_SECRET,
   providers: [
     GoogleProvider({
       clientId: process.env.CLIENT_ID,
-      clientSecret: process.env.CLIENT_SECERET,
+      clientSecret: process.env.CLIENT_SECRET,
+      redirectUri:
+        "https://typing-application-dnlwdoppx-abdulrahman-ismail-hajes-projects.vercel.app/api/auth/callback/google",
     }),
   ],
   callbacks: {
@@ -20,7 +22,7 @@ const authOptions = {
           const userExists = await User.findOne({ email });
 
           if (!userExists) {
-            const res = await fetch("http://localhost:3000/api/user", {
+            const res = await fetch("api/user", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
