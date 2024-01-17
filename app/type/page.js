@@ -5,7 +5,6 @@ import Link from "next/link";
 
 import Word from "@/Components/Word";
 import Start from "@/Components/Start";
-import Results from "@/Components/Results";
 import { useSession } from "next-auth/react";
 import "../globals.css";
 
@@ -39,13 +38,6 @@ export default function Home() {
   };
 
   useEffect(() => {
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    if (isMobile) {
-      window.location.href = "https://your-mobile-warning-page-url.com";
-    }
-  }, []);
-
-  useEffect(() => {
     setCountDown(selectedTime);
   }, [selectedTime]);
 
@@ -76,7 +68,7 @@ export default function Home() {
     }
     if (status === "authenticated") {
       try {
-        const res = await fetch("http://localhost:3000/api/user", {
+        const res = await fetch(`${process.env.NEXTAUTH_URL}/api/user`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
