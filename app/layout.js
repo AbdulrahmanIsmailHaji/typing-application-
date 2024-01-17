@@ -1,9 +1,7 @@
-import Navbar from "@/Components/NavBar";
 import "./globals.css";
 import { Inter } from "next/font/google";
 import { NextAuthProvider } from "./Providers";
-
-import Header from "@/Components/Header";
+import Main from "@/Components/Main";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,8 +16,7 @@ export default function RootLayout({ children }) {
       <body className={inter.className}>
         <NextAuthProvider>
           <div className="max-w-3xl mx-auto">
-            <Navbar />
-            {children}
+            <Main children={children} />
           </div>
         </NextAuthProvider>
       </body>
