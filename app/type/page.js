@@ -68,19 +68,22 @@ export default function Home() {
     }
     if (status === "authenticated") {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/user`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name: userData?.user?.name,
-            email: userData?.user?.email,
-            score15: selectedTime === 15 ? currentScore : score15,
-            score30: selectedTime === 30 ? currentScore : score30,
-            score60: selectedTime === 60 ? currentScore : score60,
-          }),
-        });
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/user`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              name: userData?.user?.name,
+              email: userData?.user?.email,
+              score15: selectedTime === 15 ? currentScore : score15,
+              score30: selectedTime === 30 ? currentScore : score30,
+              score60: selectedTime === 60 ? currentScore : score60,
+            }),
+          }
+        );
 
         if (res.ok) {
           console.log("New scores created successfully");
