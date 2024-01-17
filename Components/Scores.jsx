@@ -13,9 +13,12 @@ const Scores = ({ score15, score30, score60 }) => {
 
       const fetchScore = async () => {
         try {
-          const res = await fetch(`api/user`, {
-            cache: "no-store",
-          });
+          const res = await fetch(
+            `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/user`,
+            {
+              cache: "no-store",
+            }
+          );
 
           if (!res.ok) {
             throw new Error("Failed to fetch scores");
