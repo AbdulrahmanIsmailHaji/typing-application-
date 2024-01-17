@@ -68,7 +68,7 @@ export default function Home() {
     }
     if (status === "authenticated") {
       try {
-        const res = await fetch(`${process.env.NEXTAUTH_URL}/api/user`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/user`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
