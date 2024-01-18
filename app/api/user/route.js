@@ -53,11 +53,11 @@ export async function POST(request) {
 
 export async function GET(request) {
   try {
+    await connectMongoDB();
     const requestData = request.json();
 
     const { email } = requestData;
 
-    await connectMongoDB();
     const user = await User.find(email);
 
     return NextResponse.json({ user });
