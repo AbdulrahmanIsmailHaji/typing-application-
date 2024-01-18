@@ -8,11 +8,9 @@ export async function POST(request) {
 
     await connectMongoDB();
 
-    // Check if a user with the same email already exists
     const existingUser = await User.findOne({ email });
 
     if (existingUser) {
-      // Update the existing user's score only if the new scores are greater
       if (
         score15 > existingUser.score15 ||
         score30 > existingUser.score30 ||
@@ -38,7 +36,6 @@ export async function POST(request) {
         { status: 200 }
       );
     } else {
-      // Create a new user if one doesn't exist
       await User.create({ name, email, score15, score30, score60 });
       return NextResponse.json({ message: "User Registered" }, { status: 201 });
     }
@@ -54,18 +51,12 @@ export async function POST(request) {
 export async function GET(request) {
   try {
     await connectMongoDB();
-    const requestData = request.json();
-
-    const { email } = requestData;
-
-    const user = await User.find(email);
-
-    return NextResponse.json({ user });
+    const user = await User.find({}).populate("email");
+    return Response.json({ user });
   } catch (error) {
     console.error("Error:", error);
 
-    // Send a more detailed error response
-    return NextResponse.json(
+    return Response.json(
       { error: "Internal Server Error", details: error.message },
       { status: 500 }
     );

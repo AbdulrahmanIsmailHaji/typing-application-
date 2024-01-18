@@ -8,17 +8,14 @@ const Scores = ({ score15, score30, score60 }) => {
   const { status, data: userData } = session;
 
   useEffect(() => {
-    if (status === "authenticated" && userData && userData?.user) {
-      const loggedInUserEmail = userData?.user?.email;
+    const fetchScore = async () => {
+      try {
+        if (status === "authenticated" && userData && userData?.user) {
+          const loggedInUserEmail = userData.user.email;
 
-      const fetchScore = async () => {
-        try {
-          const res = await fetch(
-            `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/user`,
-            {
-              cache: "no-store",
-            }
-          );
+          const res = await fetch(`${process.env.VERCEL_URL}/api/user`, {
+            cache: "no-store",
+          });
 
           if (!res.ok) {
             throw new Error("Failed to fetch scores");
@@ -26,18 +23,15 @@ const Scores = ({ score15, score30, score60 }) => {
 
           const data = await res.json();
 
-          // Check if the response contains valid data
           if (!data || !data?.user || data?.user?.length === 0) {
             throw new Error("Empty or invalid response data");
           }
 
-          // Finding the user in the response with the matching email
           const matchingUser = data?.user?.find(
             (user) => user?.email === loggedInUserEmail
           );
 
           if (matchingUser) {
-            // Extract and set the scores for the matching user
             setScores({
               score15: matchingUser?.score15,
               score30: matchingUser?.score30,
@@ -46,14 +40,14 @@ const Scores = ({ score15, score30, score60 }) => {
           } else {
             console.log("User not found in the response");
           }
-        } catch (error) {
-          console.log("ScoreError", error);
         }
-      };
+      } catch (error) {
+        console.log("ScoreError", error);
+      }
+    };
 
-      fetchScore();
-    }
-  }, [status, userData, scores]);
+    fetchScore();
+  }, [status, userData]);
 
   if (!scores) {
     return (
